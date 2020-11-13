@@ -1,19 +1,30 @@
-#demo_job_1:
-#     tags:
-#       - ci
-#     script:
-#       - echo Hello World
+image: maven:latest
 
+stages:
+  - build
+  - test
+  - run
 
-image: rvancea/maven-chrome-jdk8:latest
+variables:
+  MAVEN_CLI_OPTS: "-s .m2/settings.xml --batch-mode"
+  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+
+cache:
+  paths:
+    - .m2/repository/
+    - target/
 
 build:
   stage: build
   script:
-    - mvn clean install
+    - mvn compile
 
 test:
   stage: test
   script:
-    - mvn deploy
+    - mvn test
 
+run:
+  stage: run
+  script:
+    - mvn package
