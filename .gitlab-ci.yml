@@ -1,0 +1,19 @@
+#demo_job_1:
+#     tags:
+#       - ci
+#     script:
+#       - echo Hello World
+
+
+image: rvancea/maven-chrome-jdk8:latest
+
+build:
+  stage: build
+  script:
+    - mvn clean install
+
+test:
+  stage: test
+  script:
+    - mvn deploy
+
